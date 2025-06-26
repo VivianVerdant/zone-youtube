@@ -100,8 +100,11 @@ function requireAuth(request, response, next) {
  * @returns {Promise<VideoMetadata[]>}
  */
 async function searchYoutube(options) {
+    console.log("searching for: ", options);
     const result = await ytsr(options.q, { limit: 15, type: "video" });
+    console.log("result: ", result);
     const videos = result.items.filter((item) => !item.isLive && item.duration);
+    console.log("videos: ", videos);
     /** @type {VideoMetadata[]} */
     const entries = videos.map((video) => ({
         mediaId: video.id,
@@ -109,6 +112,7 @@ async function searchYoutube(options) {
         duration: timeToSeconds(video.duration) * 1000,
         thumbnail: video.thumbnail,
     }));
+    console.log("entries: ", entries);
     return entries;
 }
 
